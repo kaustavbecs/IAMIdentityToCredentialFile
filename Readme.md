@@ -1,4 +1,4 @@
-# IAM Identity to Credential File
+# S3 Fuse with AWS IAM Identity Center (SSO)
 
 This tool provides a workaround to mount S3 to a filesystem using S3Fuse for AWS SSO (IAM Identity Center) users. Utilities like S3Fuse may not work properly with AWS SSO temporary credentials, so this tool helps bridge that gap.
 
