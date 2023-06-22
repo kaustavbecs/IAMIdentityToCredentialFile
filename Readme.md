@@ -1,41 +1,89 @@
-# Purpose
-Utilties such as S3Fuse does not work properly with AWS SSO (IAM Identity Center) temporary crendentials. This tool will provide a workaround to mount S3 to a filesystem using S3Fuse for IAM Identity center users
+# IAM Identity to Credential File
 
-# Prerequisites
-1. AWS CLI V2 installed
-2. jq installed
-3. curl installed
-4. s3fs installed
-5. s3 bucket created
+This tool provides a workaround to mount S3 to a filesystem using S3Fuse for AWS SSO (IAM Identity Center) users. Utilities like S3Fuse may not work properly with AWS SSO temporary credentials, so this tool helps bridge that gap.
 
-# Usage
-1. Go to your $Home/.aws directory from the terminal
+## Prerequisites
 
-    ```cd $HOME/.aws```
-1. Download the script to your $Home/.aws directory
+1. AWS CLI v2 installed
+2. `jq` package installed
+3. `curl` package installed
+4. `s3fs` package installed
+5. S3 bucket created
 
-    ```curl -O https://raw.githubusercontent.com/kaustavbecs/IAMIdentityToCredentialFile/main/script.sh```
-2. Run the command to add the execute permission: 
+## Usage
 
-    ```chmod +x script.sh```
+1. Open a terminal.
 
-3. Configure SSO with the IAM account center and details
+2. Navigate to your `$HOME/.aws` directory by running the following command:
 
-    ```aws configure sso```
+    ```shell
+    cd $HOME/.aws
+    ```
 
-4. Execute the script: 
+3. (Optional) If you have an existing `credentials` file in the `$HOME/.aws` directory, consider creating a backup before proceeding. You can use the following command to make a backup:
 
-    ```/home/ubuntu/.aws/script.sh <AccountID> <"Role"> <"Region">```
+    ```shell
+    mv credentials credentials_backup
+    ```
 
-5. Create a directory to mount S3
+   Note: This step is optional but recommended to avoid any conflicts or issues with the new credentials.
 
-    ```mkdir /mnt/s3mnt```
+4. Download the script to your `$HOME/.aws` directory by running the following command:
 
-6. Use S3FS to mount
+    ```shell
+    curl -O https://raw.githubusercontent.com/kaustavbecs/IAMIdentityToCredentialFile/main/script.sh
+    ```
 
-    ```s3fs <bucket> /mnt/s3mnt```
+5. Add execute permission to the script by running the following command:
 
-7. Verify the mount
+    ```shell
+    chmod +x script.sh
+    ```
 
-    ```ls /mnt/s3mnt```
+6. Configure AWS SSO with the IAM Account Center and provide the necessary details by running the following command:
+
+    ```shell
+    aws configure sso
+    ```
+
+7. (Optional) If you have an existing `credentials` file in the `$HOME/.aws` directory, delete it by running the following command:
+
+    ```shell
+    rm -f credentials
+    ```
+
+   Note: This step is optional but recommended to ensure a clean setup with the new credentials.
+
+8. Execute the script by running the following command, replacing `<AccountID>`, `<Role>`, and `<Region>` with your specific values:
+
+    ```shell
+    /home/ubuntu/.aws/script.sh <AccountID> "<Role>" "<Region>"
+    ```
+
+   The script will generate a new `credentials` file with the IAM Identity Center credentials. The `<AccountID>` is the AWS account ID associated with your IAM Identity Center user. The `<Role>` is the name of the role you want to assume. The `<Region>` is the AWS region where the role is located.
+
+   For example:
+
+   ```shell
+   /home/ubuntu/.aws/script.sh 123456789012 "MyRole" "us-west-2"
+
+9. Create a directory to mount S3 by running the following command:
+
+    ```shell
+    mkdir /mnt/s3mnt
+    ```
+
+10. Use S3FS to mount the S3 bucket by running the following command, replacing `<bucket>` with your S3 bucket name:
+
+    ```shell
+    s3fs <bucket> /mnt/s3mnt
+    ```
+
+11. Verify the mount by listing the contents of the mount directory:
+
+    ```shell
+    ls /mnt/s3mnt
+    ```
+
+    You should see the files and directories from your S3 bucket listed.
 
