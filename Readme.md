@@ -80,3 +80,10 @@ This tool provides a workaround to mount S3 to a filesystem using S3Fuse for AWS
 
     You should see the files and directories from your S3 bucket listed.
 
+## Disclaimer
+
+1. This tool is provided as-is without any warranties or guarantees. Use it at your own risk.
+2. Ensure that you have the necessary permissions and access rights to use AWS SSO and access the specified AWS resources.
+3. Make sure to follow the AWS Terms of Service and guidelines while using this tool.
+4. Review the code and understand its implications before running it in your environment.
+5. Backup any important files or credentials before making any changes.
